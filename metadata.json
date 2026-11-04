@@ -1,0 +1,6 @@
+{
+  "name": "MUDRA – Traditional Indian Fashion & Ornaments",
+  "description": "Tradition Woven with Divine Grace. Premium traditional Indian fashion, bridal sarees, royal sherwanis, handcrafted temple jewelry, and spiritual ornaments inspired by Radha-Krishna culture.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
