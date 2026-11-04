@@ -32,7 +32,7 @@ export const AboutView: React.FC = () => {
 
       <div className="aspect-16/9 rounded-xl overflow-hidden shadow-lg border border-[#D4AF37]/30">
         <img
-          src="/src/assets/images/mudra_hero_divine_couture_1793641346974.jpg"
+          src="/images/mudra_hero_divine_couture_1793641346974.jpg"
           alt="MUDRA Divine Heritage"
           className="w-full h-full object-cover"
         />

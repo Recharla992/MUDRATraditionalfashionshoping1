@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { X, Trash2, Plus, Minus, ArrowRight, Tag, ShieldCheck, Sparkles } from 'lucide-react';
+import { normalizeImageUrl, handleImageError } from '../utils/imageHelper';
 
 export const CartDrawer: React.FC = () => {
   const {
@@ -120,8 +121,9 @@ export const CartDrawer: React.FC = () => {
                     className="flex gap-3 bg-white p-3 rounded-lg border border-[#E8E2D9] relative"
                   >
                     <img
-                      src={item.product.images[0]}
+                      src={normalizeImageUrl(item.product.images[0], item.product.category)}
                       alt={item.product.name}
+                      onError={(e) => handleImageError(e, item.product.category)}
                       className="w-20 h-24 object-cover object-top rounded-md bg-[#F3EFE9]"
                     />
                     <div className="flex-1 flex flex-col justify-between">

@@ -61,7 +61,7 @@ export const AdminDashboardView: React.FC = () => {
   const [newProdStock, setNewProdStock] = useState(15);
   const [newProdMaterial, setNewProdMaterial] = useState('100% Pure Mulberry Silk');
   const [newProdDesc, setNewProdDesc] = useState('');
-  const [newProdImage, setNewProdImage] = useState('/src/assets/images/mudra_women_kanchipuram_saree_1793641347386.jpg');
+  const [newProdImage, setNewProdImage] = useState('/images/mudra_women_kanchipuram_saree_1793641347386.jpg');
 
   // New Category Form state
   const [newCatName, setNewCatName] = useState('');
@@ -638,7 +638,7 @@ export const AdminDashboardView: React.FC = () => {
                   id: newCatId,
                   name: newCatName,
                   description: newCatDesc || 'Traditional Indian handloom collection.',
-                  bannerImage: '/src/assets/images/mudra_women_kanchipuram_saree_1793641347386.jpg',
+                  bannerImage: '/images/mudra_women_kanchipuram_saree_1793641347386.jpg',
                   subcategories: ['Festive Special', 'Artisan Handloom'],
                 });
                 setNewCatName('');
@@ -913,31 +913,31 @@ export const AdminDashboardView: React.FC = () => {
                   onChange={(e) => setNewProdImage(e.target.value)}
                   className="w-full px-3 py-2 bg-[#FAF8F5] border border-[#D9D0C3] rounded-md font-mono"
                 >
-                  <option value="/src/assets/images/mudra_tissue_silk_saree_1793643995228.jpg">
+                  <option value="/images/mudra_tissue_silk_saree_1793643995228.jpg">
                     Metallic Gold Tissue Silk Saree
                   </option>
-                  <option value="/src/assets/images/mudra_kora_organza_saree_1793643995592.jpg">
+                  <option value="/images/mudra_kora_organza_saree_1793643995592.jpg">
                     Banarasi Kora Organza Silk Saree
                   </option>
-                  <option value="/src/assets/images/mudra_temple_kada_bangles_1793643997507.jpg">
+                  <option value="/images/mudra_temple_kada_bangles_1793643997507.jpg">
                     Antique Temple Bangles & Kadas
                   </option>
-                  <option value="/src/assets/images/mudra_accessories_bridal_potli_1793643997562.jpg">
+                  <option value="/images/mudra_accessories_bridal_potli_1793643997562.jpg">
                     Bridal Zardozi Potli Bag & Kamarbandh
                   </option>
-                  <option value="/src/assets/images/mudra_women_kanchipuram_saree_1793641347386.jpg">
+                  <option value="/images/mudra_women_kanchipuram_saree_1793641347386.jpg">
                     Kanchipuram Silk Bridal Saree
                   </option>
-                  <option value="/src/assets/images/mudra_men_royal_sherwani_1793641348047.jpg">
+                  <option value="/images/mudra_men_royal_sherwani_1793641348047.jpg">
                     Royal Navy Raw Silk Sherwani
                   </option>
-                  <option value="/src/assets/images/mudra_temple_jewelry_ornament_1793641350294.jpg">
+                  <option value="/images/mudra_temple_jewelry_ornament_1793641350294.jpg">
                     Antique Temple Jewelry Set
                   </option>
-                  <option value="/src/assets/images/mudra_spiritual_pendant_1793641347310.jpg">
+                  <option value="/images/mudra_spiritual_pendant_1793641347310.jpg">
                     Radha-Krishna Divine Pendant
                   </option>
-                  <option value="/src/assets/images/mudra_hero_divine_couture_1793641346974.jpg">
+                  <option value="/images/mudra_hero_divine_couture_1793641346974.jpg">
                     Palace Heritage Couple Couture
                   </option>
                 </select>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useApp } from '../context/AppContext';
 import { Sparkles, ArrowRight, ShieldCheck, Feather, HeartHandshake } from 'lucide-react';
+import { handleImageError } from '../utils/imageHelper';
 
 export const HeroSection: React.FC = () => {
   const { navigateTo } = useApp();
@@ -10,8 +11,9 @@ export const HeroSection: React.FC = () => {
       {/* Background Hero Image with Measured Contrast Scrim */}
       <div className="absolute inset-0 z-0">
         <img
-          src="/src/assets/images/mudra_hero_divine_couture_1793641346974.jpg"
+          src="/images/mudra_hero_divine_couture_1793641346974.jpg"
           alt="MUDRA Divine Traditional Indian Fashion & Silk Attire"
+          onError={(e) => handleImageError(e, 'women')}
           referrerPolicy="no-referrer"
           className="w-full h-full object-cover object-center filter brightness-95"
         />

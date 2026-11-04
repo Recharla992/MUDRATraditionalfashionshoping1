@@ -3,6 +3,7 @@ import { useApp } from '../context/AppContext';
 import { HeroSection } from '../components/HeroSection';
 import { ProductCard } from '../components/ProductCard';
 import { ArrowRight, Star, Sparkles, ShieldCheck, Heart, Feather, Camera, Upload, Eye } from 'lucide-react';
+import { normalizeImageUrl, handleImageError } from '../utils/imageHelper';
 
 export const HomeView: React.FC = () => {
   const { products, categories, navigateTo, reviews, openVisualSearch } = useApp();
@@ -43,8 +44,9 @@ export const HomeView: React.FC = () => {
             >
               <div className="aspect-4/5 w-full overflow-hidden">
                 <img
-                  src={cat.bannerImage}
+                  src={normalizeImageUrl(cat.bannerImage, cat.id)}
                   alt={cat.name}
+                  onError={(e) => handleImageError(e, cat.id)}
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                 />
@@ -213,8 +215,9 @@ export const HomeView: React.FC = () => {
               >
                 <div className="relative aspect-4/5 rounded-xl overflow-hidden mb-3">
                   <img
-                    src="/src/assets/images/mudra_tissue_silk_saree_1793643995228.jpg"
+                    src="/images/mudra_tissue_silk_saree_1793643995228.jpg"
                     alt="Visual Search Match Preview"
+                    onError={(e) => handleImageError(e, 'women')}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30" />
@@ -274,7 +277,7 @@ export const HomeView: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {products
             .filter((p) =>
-              ['prod-013', 'prod-014', 'prod-016', 'prod-017'].includes(p.id)
+              ['prod-003', 'prod-004', 'prod-005', 'prod-018'].includes(p.id)
             )
             .map((p) => (
               <ProductCard key={p.id} product={p} />
@@ -288,8 +291,9 @@ export const HomeView: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="relative aspect-4/3 rounded-xl overflow-hidden shadow-lg border border-[#D4AF37]/30">
               <img
-                src="/src/assets/images/mudra_hero_divine_couture_1793641346974.jpg"
+                src="/images/mudra_hero_divine_couture_1793641346974.jpg"
                 alt="Radha Krishna Divine Fashion Heritage"
+                onError={(e) => handleImageError(e, 'women')}
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#07172C]/70 via-transparent to-transparent" />

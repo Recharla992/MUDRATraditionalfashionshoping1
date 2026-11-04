@@ -3,6 +3,8 @@ import { Product } from '../types';
 import { useApp } from '../context/AppContext';
 import { Heart, Star, ShoppingBag, Eye } from 'lucide-react';
 
+import { normalizeImageUrl, handleImageError } from '../utils/imageHelper';
+
 interface ProductCardProps {
   product: Product;
 }
@@ -19,8 +21,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       {/* Product Image Stage (65-75% height) */}
       <div className="relative aspect-4/5 w-full bg-[#F3EFE9] overflow-hidden">
         <img
-          src={product.images[0]}
+          src={normalizeImageUrl(product.images[0], product.category)}
           alt={product.name}
+          onError={(e) => handleImageError(e, product.category)}
           referrerPolicy="no-referrer"
           className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
         />

@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { ProductCustomization } from '../types';
 import { CustomizationStudioModal } from '../components/CustomizationStudioModal';
+import { normalizeImageUrl, handleImageError } from '../utils/imageHelper';
 
 interface ProductDetailViewProps {
   productId: string;
@@ -161,8 +162,9 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ productId 
         <div className="lg:col-span-7 space-y-4">
           <div className="relative aspect-4/5 w-full bg-[#F3EFE9] rounded-xl overflow-hidden border border-[#E8E2D9] shadow-xs">
             <img
-              src={product.images[selectedImageIndex] || product.images[0]}
+              src={normalizeImageUrl(product.images[selectedImageIndex] || product.images[0], product.category)}
               alt={product.name}
+              onError={(e) => handleImageError(e, product.category)}
               referrerPolicy="no-referrer"
               className="w-full h-full object-cover object-top"
             />
@@ -199,7 +201,12 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ productId 
                       : 'border-transparent opacity-70 hover:opacity-100'
                   }`}
                 >
-                  <img src={img} alt="" className="w-full h-full object-cover object-top" />
+                  <img
+                    src={normalizeImageUrl(img, product.category)}
+                    alt=""
+                    onError={(e) => handleImageError(e, product.category)}
+                    className="w-full h-full object-cover object-top"
+                  />
                 </button>
               ))}
             </div>

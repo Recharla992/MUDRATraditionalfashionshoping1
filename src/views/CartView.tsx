@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { Trash2, Minus, Plus, ArrowRight, ShieldCheck, Tag, Sparkles } from 'lucide-react';
+import { normalizeImageUrl, handleImageError } from '../utils/imageHelper';
 
 export const CartView: React.FC = () => {
   const {
@@ -74,8 +75,9 @@ export const CartView: React.FC = () => {
               >
                 <div className="flex gap-4 items-start w-full sm:w-auto">
                   <img
-                    src={item.product.images[0]}
+                    src={normalizeImageUrl(item.product.images[0], item.product.category)}
                     alt={item.product.name}
+                    onError={(e) => handleImageError(e, item.product.category)}
                     className="w-20 h-24 sm:w-24 sm:h-28 object-cover rounded-md bg-[#F3EFE9] shrink-0"
                   />
                   <div className="space-y-1">

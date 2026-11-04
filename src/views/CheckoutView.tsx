@@ -11,6 +11,7 @@ import {
   CheckCircle2,
   Sparkles,
 } from 'lucide-react';
+import { normalizeImageUrl, handleImageError } from '../utils/imageHelper';
 
 const INDIAN_STATES = [
   'Andhra Pradesh',
@@ -652,8 +653,9 @@ export const CheckoutView: React.FC = () => {
                   className="flex gap-3 text-xs border-b border-[#F0EBE1] pb-3"
                 >
                   <img
-                    src={item.product.images[0]}
+                    src={normalizeImageUrl(item.product.images[0], item.product.category)}
                     alt={item.product.name}
+                    onError={(e) => handleImageError(e, item.product.category)}
                     className="w-14 h-16 object-cover rounded bg-[#F3EFE9] shrink-0"
                   />
                   <div className="flex-1">

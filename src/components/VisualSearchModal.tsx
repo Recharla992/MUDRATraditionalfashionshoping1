@@ -19,48 +19,49 @@ import {
   Video,
 } from 'lucide-react';
 import { Product, VisualSearchResult, VisualSamplePreset } from '../types';
+import { normalizeImageUrl, handleImageError } from '../utils/imageHelper';
 
 const SAMPLE_PRESETS: VisualSamplePreset[] = [
   {
     id: 'sample-kanchipuram',
     title: 'Bridal Kanchipuram Saree',
     subtitle: 'Pure Mulberry Silk with Temple Zari Pallu',
-    imageUrl: '/src/assets/images/mudra_women_kanchipuram_saree_1793641347386.jpg',
+    imageUrl: '/images/mudra_women_kanchipuram_saree_1793641347386.jpg',
     tag: 'Bridal Crimson & Gold',
   },
   {
     id: 'sample-tissue',
     title: 'Liquid Gold Tissue Silk',
     subtitle: 'High-glamour metallic sheen drape',
-    imageUrl: '/src/assets/images/mudra_tissue_silk_saree_1793643995228.jpg',
+    imageUrl: '/images/mudra_tissue_silk_saree_1793643995228.jpg',
     tag: 'Metallic Zari Sheen',
   },
   {
     id: 'sample-kora',
     title: 'Vrindavan Kora Organza',
     subtitle: 'Translucent sheer drape with floral border',
-    imageUrl: '/src/assets/images/mudra_kora_organza_saree_1793643995592.jpg',
+    imageUrl: '/images/mudra_kora_organza_saree_1793643995592.jpg',
     tag: 'Crisp Meenakari Silk',
   },
   {
     id: 'sample-sherwani',
     title: 'Royal Velvet Sherwani',
     subtitle: 'Navy & Antique Gold Groom Ensemble',
-    imageUrl: '/src/assets/images/mudra_men_royal_sherwani_1793641348047.jpg',
+    imageUrl: '/images/mudra_men_royal_sherwani_1793641348047.jpg',
     tag: "Men's Imperial Wear",
   },
   {
     id: 'sample-bangles',
     title: 'Temple Kada Bangles',
     subtitle: '22K Gold Plated with Radha-Krishna Motifs',
-    imageUrl: '/src/assets/images/mudra_temple_kada_bangles_1793643997507.jpg',
+    imageUrl: '/images/mudra_temple_kada_bangles_1793643997507.jpg',
     tag: 'Antique Nakshi Jewelry',
   },
   {
     id: 'sample-pendant',
     title: 'Krishna Flute & Mor-Pankh',
     subtitle: '22K Dipped Devotional Sacred Pendant',
-    imageUrl: '/src/assets/images/mudra_spiritual_pendant_1793641347310.jpg',
+    imageUrl: '/images/mudra_spiritual_pendant_1793641347310.jpg',
     tag: 'Spiritual Sacred Keepsake',
   },
 ];
@@ -482,8 +483,9 @@ export const VisualSearchModal: React.FC = () => {
                     >
                       <div className="aspect-square w-full rounded-lg overflow-hidden bg-gray-100 mb-2 relative">
                         <img
-                          src={preset.imageUrl}
+                          src={normalizeImageUrl(preset.imageUrl)}
                           alt={preset.title}
+                          onError={(e) => handleImageError(e)}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                         <span className="absolute bottom-1 left-1 right-1 bg-black/60 backdrop-blur-xs text-[9px] text-[#F3E8CE] px-1 py-0.5 rounded truncate text-center font-medium">
@@ -725,8 +727,9 @@ export const VisualSearchModal: React.FC = () => {
                             className="aspect-4/5 w-full rounded-lg overflow-hidden bg-gray-50 relative cursor-pointer"
                           >
                             <img
-                              src={product.images[0]}
+                              src={normalizeImageUrl(product.images[0], product.category)}
                               alt={product.name}
+                              onError={(e) => handleImageError(e, product.category)}
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                             />
                             

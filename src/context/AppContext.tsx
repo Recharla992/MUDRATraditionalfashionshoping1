@@ -233,17 +233,21 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Products
   const [products, setProducts] = useState<Product[]>(() => {
-    const saved = localStorage.getItem('mudra_products_v5');
+    const saved = localStorage.getItem('mudra_products_v7');
     if (!saved) return INITIAL_PRODUCTS;
     try {
       const parsed: Product[] = JSON.parse(saved);
       // Ensure all INITIAL_PRODUCTS exist and have latest complete 5-image galleries
       const existingIds = new Set(parsed.map((p) => p.id));
       const missing = INITIAL_PRODUCTS.filter((p) => !existingIds.has(p.id));
-      // Overwrite any older session product with fresh 5-image data from INITIAL_PRODUCTS
+      // Overwrite any older session product with fresh 5-image data from INITIAL_PRODUCTS and ensure /images/ paths
       const updated = parsed.map((p) => {
         const init = INITIAL_PRODUCTS.find((ip) => ip.id === p.id);
-        return init && (!p.images || p.images.length < 5) ? init : p;
+        const base = init && (!p.images || p.images.length < 5) ? init : p;
+        return {
+          ...base,
+          images: (base.images || []).map((img) => img.replace(/^\/src\/assets\/images\//, '/images/')),
+        };
       });
       return [...updated, ...missing];
     } catch {
@@ -310,7 +314,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Persistence side effects
   useEffect(() => {
-    localStorage.setItem('mudra_products_v5', JSON.stringify(products));
+    localStorage.setItem('mudra_products_v7', JSON.stringify(products));
   }, [products]);
 
   useEffect(() => {
