@@ -234,29 +234,48 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Products
   const [products, setProducts] = useState<Product[]>(() => {
-    // Purge outdated legacy keys that contained unbundled /src/ paths or failed images
+    // Purge any outdated legacy catalog cache keys so stale image data is never loaded
     try {
-      localStorage.removeItem('mudra_products_v5');
-      localStorage.removeItem('mudra_products_v6');
-      localStorage.removeItem('mudra_products_v7');
+      [
+        'mudra_products',
+        'mudra_products_v1',
+        'mudra_products_v2',
+        'mudra_products_v3',
+        'mudra_products_v4',
+        'mudra_products_v5',
+        'mudra_products_v6',
+        'mudra_products_v7',
+        'mudra_products_v8',
+      ].forEach((k) => localStorage.removeItem(k));
     } catch {
       // Ignore storage errors in restricted contexts
     }
 
-    const saved = localStorage.getItem('mudra_products_v8');
-    if (!saved) return INITIAL_PRODUCTS;
     try {
-      const parsed: Product[] = JSON.parse(saved);
-      const existingIds = new Set(parsed.map((p) => p.id));
-      const missing = INITIAL_PRODUCTS.filter((p) => !existingIds.has(p.id));
+      const customSaved = localStorage.getItem('mudra_custom_products');
+      const customProducts: Product[] = customSaved ? JSON.parse(customSaved) : [];
 
-      // Retain all user modifications (name, price, stock, specs) while guaranteeing 5 working gallery images
-      const updated = parsed.map((p) => ({
-        ...p,
-        images: ensure5GalleryImages(p.images, p.category),
-      }));
+      const modifiedSaved = localStorage.getItem('mudra_modified_products');
+      const modifiedMap: Record<string, Partial<Product>> = modifiedSaved ? JSON.parse(modifiedSaved) : {};
 
-      return [...updated, ...missing];
+      const baseProducts = INITIAL_PRODUCTS.map((prod) => {
+        if (modifiedMap[prod.id]) {
+          return {
+            ...prod,
+            ...modifiedMap[prod.id],
+            images: ensure5GalleryImages(modifiedMap[prod.id].images || prod.images, prod.category),
+          };
+        }
+        return prod;
+      });
+
+      return [
+        ...customProducts.map((p) => ({
+          ...p,
+          images: ensure5GalleryImages(p.images, p.category),
+        })),
+        ...baseProducts,
+      ];
     } catch {
       return INITIAL_PRODUCTS;
     }
@@ -346,10 +365,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Toast
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'info' | 'error' } | null>(null);
 
-  // Persistence side effects
-  useEffect(() => {
-    localStorage.setItem('mudra_products_v8', JSON.stringify(products));
-  }, [products]);
+  // Persistence side effects for cart, wishlist, orders, reviews, coupons
 
   useEffect(() => {
     localStorage.setItem('mudra_cart', JSON.stringify(cart));
@@ -795,6 +811,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       createdAt: new Date().toISOString(),
     };
     setProducts((prev) => [newProduct, ...prev]);
+    try {
+      const customSaved = localStorage.getItem('mudra_custom_products');
+      const customList: Product[] = customSaved ? JSON.parse(customSaved) : [];
+      localStorage.setItem('mudra_custom_products', JSON.stringify([newProduct, ...customList]));
+    } catch {
+      // Ignore storage errors in restricted contexts
+    }
     showToast(`Product "${newProduct.name}" added to catalog.`, 'success');
   };
 
@@ -804,12 +827,37 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       images: ensure5GalleryImages(updated.images, updated.category),
     };
     setProducts((prev) => prev.map((p) => (p.id === updated.id ? productWithGallery : p)));
+    try {
+      const customSaved = localStorage.getItem('mudra_custom_products');
+      const customList: Product[] = customSaved ? JSON.parse(customSaved) : [];
+      if (customList.some((cp) => cp.id === updated.id)) {
+        const nextCustom = customList.map((cp) => (cp.id === updated.id ? productWithGallery : cp));
+        localStorage.setItem('mudra_custom_products', JSON.stringify(nextCustom));
+      } else {
+        const modifiedSaved = localStorage.getItem('mudra_modified_products');
+        const modifiedMap: Record<string, Partial<Product>> = modifiedSaved ? JSON.parse(modifiedSaved) : {};
+        modifiedMap[updated.id] = productWithGallery;
+        localStorage.setItem('mudra_modified_products', JSON.stringify(modifiedMap));
+      }
+    } catch {
+      // Ignore storage errors in restricted contexts
+    }
     showToast(`Updated "${updated.name}" details.`, 'success');
   };
 
   const deleteProduct = (id: string) => {
     const target = products.find((p) => p.id === id);
     setProducts((prev) => prev.filter((p) => p.id !== id));
+    try {
+      const customSaved = localStorage.getItem('mudra_custom_products');
+      const customList: Product[] = customSaved ? JSON.parse(customSaved) : [];
+      localStorage.setItem(
+        'mudra_custom_products',
+        JSON.stringify(customList.filter((p) => p.id !== id))
+      );
+    } catch {
+      // Ignore storage errors in restricted contexts
+    }
     showToast(`Removed "${target?.name || 'Product'}" from catalog.`, 'info');
   };
 
