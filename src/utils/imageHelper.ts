@@ -5,13 +5,13 @@ import React from 'react';
  */
 export const CATEGORY_IMAGE_POOLS: Record<string, string[]> = {
   women: [
-    '/images/mudra_women_kanchipuram_saree_1793641347386.jpg',
     '/images/banarasi_silk_saree_1793794026510.jpg',
     '/images/mudra_tissue_silk_saree_1793643995228.jpg',
-    '/images/mudra_kora_organza_saree_1793643995592.jpg',
     '/images/chanderi_silk_saree_1793794041755.jpg',
+    '/images/mudra_kora_organza_saree_1793643995592.jpg',
     '/images/chanderi_anarkali_suit_1793794151720.jpg',
     '/images/mudra_accessories_bridal_potli_1793643997562.jpg',
+    '/images/mudra_women_kanchipuram_saree_1793641347386.jpg',
   ],
   men: [
     '/images/mudra_men_royal_sherwani_1793641348047.jpg',
@@ -21,19 +21,19 @@ export const CATEGORY_IMAGE_POOLS: Record<string, string[]> = {
     '/images/mudra_hero_divine_couture_1793641346974.jpg',
   ],
   jewelry: [
-    '/images/temple_necklace_set_1793794054267.jpg',
     '/images/mudra_temple_jewelry_ornament_1793641350294.jpg',
     '/images/mudra_temple_kada_bangles_1793643997507.jpg',
     '/images/bridal_chuda_bangles_1793794068525.jpg',
+    '/images/temple_necklace_set_1793794054267.jpg',
     '/images/silver_temple_anklets_1793794138067.jpg',
     '/images/temple_kamarbandh_waistband_1793794110146.jpg',
   ],
   spiritual: [
-    '/images/radhakrishna_peacock_pendant_1793794123748.jpg',
     '/images/mudra_spiritual_pendant_1793641347310.jpg',
+    '/images/radhakrishna_peacock_pendant_1793794123748.jpg',
     '/images/vrindavan_pooja_thali_1793794223647.jpg',
-    '/images/temple_necklace_set_1793794054267.jpg',
     '/images/mudra_temple_jewelry_ornament_1793641350294.jpg',
+    '/images/banarasi_silk_saree_1793794026510.jpg',
   ],
 };
 
@@ -168,16 +168,25 @@ export function handleImageError(
   category?: string
 ): void {
   const target = event.currentTarget;
+  const currentSrc = target.getAttribute('src') || '';
   const fallback = getCategoryFallbackImage(category);
 
-  // Avoid infinite loop if the fallback also fails
-  if (!target.dataset.hasFailed) {
-    target.dataset.hasFailed = 'true';
-    target.src = fallback;
-  } else if (!target.dataset.hasFailedSvg) {
-    target.dataset.hasFailedSvg = 'true';
-    // Ultimate SVG fallback with gold insignia if network completely blocks image files
-    target.src =
-      'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="500" viewBox="0 0 400 500" fill="%230C2B4E"><rect width="400" height="500" fill="%230C2B4E"/><text x="50%" y="46%" dominant-baseline="middle" text-anchor="middle" fill="%23D4AF37" font-family="serif" font-size="28" font-weight="bold">MUDRA</text><text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" fill="%23E8E2D9" font-family="sans-serif" font-size="14">Divine Heritage Collection</text></svg>';
+  if (target.dataset.hasFailed) {
+    if (!target.dataset.hasFailedSecond) {
+      target.dataset.hasFailedSecond = 'true';
+      // Secondary fallback to verified available real image
+      target.src = '/images/banarasi_silk_saree_1793794026510.jpg';
+      return;
+    }
+    if (!target.dataset.hasFailedSvg) {
+      target.dataset.hasFailedSvg = 'true';
+      target.src =
+        'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="500" viewBox="0 0 400 500" fill="%230C2B4E"><rect width="400" height="500" fill="%230C2B4E"/><text x="50%" y="46%" dominant-baseline="middle" text-anchor="middle" fill="%23D4AF37" font-family="serif" font-size="28" font-weight="bold">MUDRA</text><text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" fill="%23E8E2D9" font-family="sans-serif" font-size="14">Divine Heritage Collection</text></svg>';
+    }
+    return;
   }
+
+  target.dataset.hasFailed = 'true';
+  target.src = currentSrc === fallback ? '/images/banarasi_silk_saree_1793794026510.jpg' : fallback;
 }
+
