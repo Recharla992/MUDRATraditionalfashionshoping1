@@ -20,6 +20,7 @@ import {
   INITIAL_COUPONS,
   INITIAL_REVIEWS,
 } from '../data/initialProducts';
+import { ensure5GalleryImages, normalizeImageUrl } from '../utils/imageHelper';
 
 interface AppContextType {
   // Navigation
@@ -233,22 +234,28 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Products
   const [products, setProducts] = useState<Product[]>(() => {
-    const saved = localStorage.getItem('mudra_products_v7');
+    // Purge outdated legacy keys that contained unbundled /src/ paths or failed images
+    try {
+      localStorage.removeItem('mudra_products_v5');
+      localStorage.removeItem('mudra_products_v6');
+      localStorage.removeItem('mudra_products_v7');
+    } catch {
+      // Ignore storage errors in restricted contexts
+    }
+
+    const saved = localStorage.getItem('mudra_products_v8');
     if (!saved) return INITIAL_PRODUCTS;
     try {
       const parsed: Product[] = JSON.parse(saved);
-      // Ensure all INITIAL_PRODUCTS exist and have latest complete 5-image galleries
       const existingIds = new Set(parsed.map((p) => p.id));
       const missing = INITIAL_PRODUCTS.filter((p) => !existingIds.has(p.id));
-      // Overwrite any older session product with fresh 5-image data from INITIAL_PRODUCTS and ensure /images/ paths
-      const updated = parsed.map((p) => {
-        const init = INITIAL_PRODUCTS.find((ip) => ip.id === p.id);
-        const base = init && (!p.images || p.images.length < 5) ? init : p;
-        return {
-          ...base,
-          images: (base.images || []).map((img) => img.replace(/^\/src\/assets\/images\//, '/images/')),
-        };
-      });
+
+      // Retain all user modifications (name, price, stock, specs) while guaranteeing 5 working gallery images
+      const updated = parsed.map((p) => ({
+        ...p,
+        images: ensure5GalleryImages(p.images, p.category),
+      }));
+
       return [...updated, ...missing];
     } catch {
       return INITIAL_PRODUCTS;
@@ -261,7 +268,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Cart
   const [cart, setCart] = useState<CartItem[]>(() => {
     const saved = localStorage.getItem('mudra_cart');
-    return saved ? JSON.parse(saved) : [];
+    if (!saved) return [];
+    try {
+      const parsed: CartItem[] = JSON.parse(saved);
+      return parsed.map((item) => ({
+        ...item,
+        product: {
+          ...item.product,
+          images: ensure5GalleryImages(item.product?.images, item.product?.category),
+        },
+      }));
+    } catch {
+      return [];
+    }
   });
   const [isCartDrawerOpen, setIsCartDrawerOpen] = useState(false);
 
@@ -281,7 +300,22 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Orders
   const [orders, setOrders] = useState<Order[]>(() => {
     const saved = localStorage.getItem('mudra_orders');
-    return saved ? JSON.parse(saved) : INITIAL_ORDERS;
+    if (!saved) return INITIAL_ORDERS;
+    try {
+      const parsed: Order[] = JSON.parse(saved);
+      return parsed.map((order) => ({
+        ...order,
+        items: (order.items || []).map((item) => ({
+          ...item,
+          product: {
+            ...item.product,
+            images: ensure5GalleryImages(item.product?.images, item.product?.category),
+          },
+        })),
+      }));
+    } catch {
+      return INITIAL_ORDERS;
+    }
   });
 
   // Reviews
@@ -314,7 +348,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Persistence side effects
   useEffect(() => {
-    localStorage.setItem('mudra_products_v7', JSON.stringify(products));
+    localStorage.setItem('mudra_products_v8', JSON.stringify(products));
   }, [products]);
 
   useEffect(() => {
@@ -755,6 +789,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const newProduct: Product = {
       ...productData,
       id: `prod-${Date.now()}`,
+      images: ensure5GalleryImages(productData.images, productData.category),
       rating: 5.0,
       reviewCount: 0,
       createdAt: new Date().toISOString(),
@@ -764,7 +799,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const updateProduct = (updated: Product) => {
-    setProducts((prev) => prev.map((p) => (p.id === updated.id ? updated : p)));
+    const productWithGallery: Product = {
+      ...updated,
+      images: ensure5GalleryImages(updated.images, updated.category),
+    };
+    setProducts((prev) => prev.map((p) => (p.id === updated.id ? productWithGallery : p)));
     showToast(`Updated "${updated.name}" details.`, 'success');
   };
 

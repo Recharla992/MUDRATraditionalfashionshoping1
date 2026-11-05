@@ -26,6 +26,13 @@ export const Footer: React.FC = () => {
                 <img
                   src="/mudra-logo.png"
                   alt="MUDRA Divine Heritage"
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    if (!target.dataset.tried) {
+                      target.dataset.tried = 'true';
+                      target.src = '/mudra-logo-gold.png';
+                    }
+                  }}
                   className="w-full h-full object-contain filter drop-shadow-[0_2px_10px_rgba(255,226,133,0.9)]"
                 />
               </div>

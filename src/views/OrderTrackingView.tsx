@@ -11,6 +11,7 @@ import {
   Calendar,
   AlertCircle,
 } from 'lucide-react';
+import { normalizeImageUrl, handleImageError } from '../utils/imageHelper';
 
 export const OrderTrackingView: React.FC = () => {
   const { orders, trackingOrderId, setTrackingOrderId, getOrderById } = useApp();
@@ -192,8 +193,9 @@ export const OrderTrackingView: React.FC = () => {
                     >
                       <div className="flex items-center gap-2">
                         <img
-                          src={item.product.images[0]}
+                          src={normalizeImageUrl(item.product.images[0], item.product.category)}
                           alt={item.product.name}
+                          onError={(e) => handleImageError(e, item.product.category)}
                           className="w-10 h-12 object-cover rounded bg-[#F3EFE9]"
                         />
                         <div>

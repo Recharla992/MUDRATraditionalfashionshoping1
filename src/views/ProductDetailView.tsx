@@ -58,6 +58,11 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ productId 
   const [pincode, setPincode] = useState('');
   const [pincodeStatus, setPincodeStatus] = useState<string | null>(null);
 
+  // Reset image view when product changes
+  React.useEffect(() => {
+    setSelectedImageIndex(0);
+  }, [productId]);
+
   // Review Form state
   const [reviewRating, setReviewRating] = useState(5);
   const [reviewTitle, setReviewTitle] = useState('');

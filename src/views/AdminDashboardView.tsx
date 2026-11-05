@@ -20,6 +20,7 @@ import {
   Search,
   Filter,
 } from 'lucide-react';
+import { normalizeImageUrl, handleImageError, ensure5GalleryImages } from '../utils/imageHelper';
 
 export const AdminDashboardView: React.FC = () => {
   const {
@@ -85,6 +86,15 @@ export const AdminDashboardView: React.FC = () => {
     if (!newProdName) return;
 
     if (editingProduct) {
+      const existingImages = (editingProduct.images || []).map((img) =>
+        normalizeImageUrl(img, newProdCategory)
+      );
+      const normalizedPrimary = normalizeImageUrl(newProdImage, newProdCategory);
+      const updatedImages = [
+        normalizedPrimary,
+        ...existingImages.filter((img) => img !== normalizedPrimary),
+      ];
+
       updateProduct({
         ...editingProduct,
         name: newProdName,
@@ -100,10 +110,11 @@ export const AdminDashboardView: React.FC = () => {
         stock: Number(newProdStock),
         material: newProdMaterial,
         description: newProdDesc,
-        images: [newProdImage],
+        images: ensure5GalleryImages(updatedImages, newProdCategory),
       });
       setEditingProduct(null);
     } else {
+      const normalizedPrimary = normalizeImageUrl(newProdImage, newProdCategory);
       addProduct({
         name: newProdName,
         sku: newProdSku || `MUD-${Math.floor(1000 + Math.random() * 9000)}`,
@@ -121,7 +132,7 @@ export const AdminDashboardView: React.FC = () => {
         fabricDetails: 'Pure Handcrafted Masterpiece',
         specifications: { Weave: 'Handloom Authenticated' },
         description: newProdDesc || 'Authentic traditional Indian ensemble.',
-        images: [newProdImage],
+        images: ensure5GalleryImages([normalizedPrimary], newProdCategory),
         availableSizes: ['Free Size'],
         availableColors: [{ name: 'Royal Gold', hex: '#D4AF37' }],
         isFeatured: true,
@@ -427,8 +438,9 @@ export const AdminDashboardView: React.FC = () => {
                       <td className="py-3 px-4">
                         <div className="flex items-center gap-3">
                           <img
-                            src={p.images[0]}
-                            alt=""
+                            src={normalizeImageUrl(p.images[0], p.category)}
+                            alt={p.name}
+                            onError={(e) => handleImageError(e, p.category)}
                             className="w-10 h-12 object-cover rounded bg-[#F3EFE9]"
                           />
                           <div>

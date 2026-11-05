@@ -1,6 +1,7 @@
 import React from 'react';
 import { useApp } from '../context/AppContext';
 import { CheckCircle2, Package, Truck, ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
+import { normalizeImageUrl, handleImageError } from '../utils/imageHelper';
 
 export const OrderConfirmationView: React.FC = () => {
   const { orderForConfirmation, navigateTo } = useApp();
@@ -86,8 +87,9 @@ export const OrderConfirmationView: React.FC = () => {
                 >
                   <div className="flex items-center gap-3">
                     <img
-                      src={item.product.images[0]}
+                      src={normalizeImageUrl(item.product.images[0], item.product.category)}
                       alt={item.product.name}
+                      onError={(e) => handleImageError(e, item.product.category)}
                       className="w-14 h-16 object-cover rounded bg-[#F3EFE9] shrink-0"
                     />
                     <div>

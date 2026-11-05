@@ -77,6 +77,13 @@ export const Navbar: React.FC = () => {
               <img
                 src="/mudra-logo.png"
                 alt="MUDRA - Divine Traditional Indian Fashion & Ornaments"
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  if (!target.dataset.tried) {
+                    target.dataset.tried = 'true';
+                    target.src = '/mudra-logo-gold.png';
+                  }
+                }}
                 className="w-full h-full object-contain filter drop-shadow-[0_2px_8px_rgba(255,226,133,0.85)] group-hover:scale-108 transition-transform duration-300"
               />
             </div>
