@@ -5,35 +5,43 @@ import React from 'react';
  */
 export const CATEGORY_IMAGE_POOLS: Record<string, string[]> = {
   women: [
+    '/images/mudra_women_kanchipuram_saree_1793641347386.jpg',
     '/images/banarasi_silk_saree_1793794026510.jpg',
+    '/images/designer_silk_blouse_1794502712027.jpg',
     '/images/mudra_tissue_silk_saree_1793643995228.jpg',
     '/images/chanderi_silk_saree_1793794041755.jpg',
     '/images/mudra_kora_organza_saree_1793643995592.jpg',
     '/images/chanderi_anarkali_suit_1793794151720.jpg',
     '/images/mudra_accessories_bridal_potli_1793643997562.jpg',
-    '/images/mudra_women_kanchipuram_saree_1793641347386.jpg',
+    '/images/temple_kamarbandh_waistband_1793794110146.jpg',
+    '/images/mudra_hero_divine_couture_1793641346974.jpg',
   ],
   men: [
     '/images/mudra_men_royal_sherwani_1793641348047.jpg',
+    '/images/mens_emerald_nehru_jacket_1794502710746.jpg',
+    '/images/mens_safa_kalgi_brooch_1794502711999.jpg',
     '/images/mens_kurta_jacket_1793794082318.jpg',
     '/images/men_dhoti_kurta_set_1793794209207.jpg',
     '/images/mens_silk_mojari_1793794096375.jpg',
     '/images/mudra_hero_divine_couture_1793641346974.jpg',
   ],
   jewelry: [
+    '/images/temple_necklace_set_1793794054267.jpg',
+    '/images/temple_jhumkas_earrings_1794502709503.jpg',
+    '/images/bridal_maang_tikka_1794502709705.jpg',
     '/images/mudra_temple_jewelry_ornament_1793641350294.jpg',
     '/images/mudra_temple_kada_bangles_1793643997507.jpg',
     '/images/bridal_chuda_bangles_1793794068525.jpg',
-    '/images/temple_necklace_set_1793794054267.jpg',
     '/images/silver_temple_anklets_1793794138067.jpg',
     '/images/temple_kamarbandh_waistband_1793794110146.jpg',
   ],
   spiritual: [
     '/images/mudra_spiritual_pendant_1793641347310.jpg',
     '/images/radhakrishna_peacock_pendant_1793794123748.jpg',
+    '/images/morpankh_brooch_bookmark_1794502713547.jpg',
+    '/images/tulsi_box_bansuri_flute_1794502713533.jpg',
     '/images/vrindavan_pooja_thali_1793794223647.jpg',
-    '/images/mudra_temple_jewelry_ornament_1793641350294.jpg',
-    '/images/banarasi_silk_saree_1793794026510.jpg',
+    '/images/auspicious_gift_hamper_1794502714767.jpg',
   ],
 };
 
