@@ -363,7 +363,8 @@ export const ShopView: React.FC<ShopViewProps> = ({ initialCategory }) => {
               <div className="space-y-1">
                 {[
                   { id: 'all', label: 'All Fabrics' },
-                  { id: 'kora', label: 'Banarasi Kora Silk (Organza)' },
+                  { id: 'organza', label: 'Pure Silk Organza & Kora' },
+                  { id: 'kora', label: 'Banarasi Kora Silk' },
                   { id: 'tissue', label: 'Metallic Gold Tissue Silk' },
                   { id: 'chanderi', label: 'Pure Chanderi Silk' },
                   { id: 'kanchipuram', label: 'Kanchipuram Silk' },
@@ -458,7 +459,7 @@ export const ShopView: React.FC<ShopViewProps> = ({ initialCategory }) => {
               { label: 'Kanchipuram Silk', cat: 'women', sub: 'Kanchipuram Sarees', fab: 'kanchipuram' },
               { label: 'Banarasi Sarees', cat: 'women', sub: 'Banarasi Sarees', fab: 'banarasi' },
               { label: 'Metallic Tissue', cat: 'women', sub: 'Tissue Sarees', fab: 'tissue' },
-              { label: 'Kora Organza', cat: 'women', sub: 'Kora Silk Sarees', fab: 'kora' },
+              { label: 'Pure Organza & Kora', cat: 'all', sub: 'all', fab: 'organza' },
               { label: 'Chanderi Sarees', cat: 'women', sub: 'Chanderi Sarees', fab: 'chanderi' },
               { label: 'Royal Sherwanis', cat: 'men', sub: 'Royal Sherwanis', fab: 'all' },
               { label: 'Silk Mojaris & Juttis', cat: 'men', sub: 'Handcrafted Silk Mojaris', fab: 'all' },

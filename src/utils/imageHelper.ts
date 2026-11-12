@@ -5,6 +5,7 @@ import React from 'react';
  */
 export const CATEGORY_IMAGE_POOLS: Record<string, string[]> = {
   women: [
+    '/images/mudra_women_organza_floral_lehenga_1794502801.png',
     '/images/mudra_women_kanchipuram_saree_1793641347386.jpg',
     '/images/banarasi_silk_saree_1793794026510.jpg',
     '/images/designer_silk_blouse_1794502712027.jpg',
@@ -17,6 +18,7 @@ export const CATEGORY_IMAGE_POOLS: Record<string, string[]> = {
     '/images/mudra_hero_divine_couture_1793641346974.jpg',
   ],
   men: [
+    '/images/mudra_men_organza_floral_achkan_sherwani_1794502802.png',
     '/images/mudra_men_royal_sherwani_1793641348047.jpg',
     '/images/mens_emerald_nehru_jacket_1794502710746.jpg',
     '/images/mens_safa_kalgi_brooch_1794502711999.jpg',
