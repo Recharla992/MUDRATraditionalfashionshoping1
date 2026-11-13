@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { GoogleGenAI } from '@google/genai';
+import { aiRouter } from './server/aiRoutes.ts';
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ const app = express();
 
 app.use(express.json({ limit: '20mb' }));
 app.use(express.urlencoded({ extended: true, limit: '20mb' }));
+app.use('/api/ai', aiRouter);
 
 // Initialize Gemini SDK if key is present
 const apiKey = process.env.GEMINI_API_KEY;

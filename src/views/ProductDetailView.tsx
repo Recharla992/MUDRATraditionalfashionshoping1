@@ -15,6 +15,8 @@ import {
   Clock,
   Feather,
   Scissors,
+  Shirt,
+  Palette,
 } from 'lucide-react';
 import { ProductCustomization } from '../types';
 import { CustomizationStudioModal } from '../components/CustomizationStudioModal';
@@ -481,6 +483,41 @@ export const ProductDetailView: React.FC<ProductDetailViewProps> = ({ productId 
                 <span>Buy Now</span>
               </button>
             </div>
+
+            {(product.category === 'women' || product.category === 'men') && (
+              <div className="pt-2 grid grid-cols-3 gap-2">
+                <button
+                  type="button"
+                  onClick={() =>
+                    navigateTo('ai-studio', { productId: product.id, aiTab: 'try-on' })
+                  }
+                  className="py-2 px-2 bg-[#FAF8F5] hover:bg-[#FAF5E8] border border-[#E8E2D9] hover:border-[#D4AF37] text-[#0C2B4E] text-[11px] font-semibold rounded-md flex items-center justify-center gap-1 transition-colors cursor-pointer"
+                >
+                  <Shirt className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" />
+                  <span className="truncate">Virtual Try-On</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    navigateTo('ai-studio', { productId: product.id, aiTab: 'color-studio' })
+                  }
+                  className="py-2 px-2 bg-[#FAF8F5] hover:bg-[#FAF5E8] border border-[#E8E2D9] hover:border-[#D4AF37] text-[#0C2B4E] text-[11px] font-semibold rounded-md flex items-center justify-center gap-1 transition-colors cursor-pointer"
+                >
+                  <Palette className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" />
+                  <span className="truncate">Colour Studio</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() =>
+                    navigateTo('ai-studio', { productId: product.id, aiTab: 'design-studio' })
+                  }
+                  className="py-2 px-2 bg-[#FAF8F5] hover:bg-[#FAF5E8] border border-[#E8E2D9] hover:border-[#D4AF37] text-[#0C2B4E] text-[11px] font-semibold rounded-md flex items-center justify-center gap-1 transition-colors cursor-pointer"
+                >
+                  <Scissors className="w-3.5 h-3.5 text-[#D4AF37] shrink-0" />
+                  <span className="truncate">Design Studio</span>
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Pincode Delivery Estimator */}

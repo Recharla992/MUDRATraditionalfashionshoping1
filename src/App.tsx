@@ -19,9 +19,11 @@ import { WishlistView } from './views/WishlistView';
 import { AccountView } from './views/AccountView';
 import { AdminDashboardView } from './views/AdminDashboardView';
 import { AboutView, ContactView, FAQView, PolicyView } from './views/StaticPages';
+import { AIFashionLabHub } from './components/ai/AIFashionLabHub';
+import { TextileHeritageExplorer } from './components/ai/TextileHeritageExplorer';
 
 const AppContent: React.FC = () => {
-  const { currentView, selectedProductId } = useApp();
+  const { currentView, selectedProductId, aiStudioTab, aiStudioProductId } = useApp();
 
   const renderCurrentView = () => {
     switch (currentView) {
@@ -39,6 +41,13 @@ const AppContent: React.FC = () => {
         return <ShopView initialCategory="spiritual" />;
       case 'product-detail':
         return <ProductDetailView productId={selectedProductId || 'prod-001'} />;
+      case 'ai-studio':
+        return (
+          <div className="py-10 space-y-12">
+            <AIFashionLabHub initialTab={aiStudioTab} initialProductId={aiStudioProductId} />
+            <TextileHeritageExplorer />
+          </div>
+        );
       case 'cart':
         return <CartView />;
       case 'checkout':

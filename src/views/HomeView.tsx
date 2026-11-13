@@ -4,6 +4,8 @@ import { HeroSection } from '../components/HeroSection';
 import { ProductCard } from '../components/ProductCard';
 import { ArrowRight, Star, Sparkles, ShieldCheck, Heart, Feather, Camera, Upload, Eye } from 'lucide-react';
 import { normalizeImageUrl, handleImageError } from '../utils/imageHelper';
+import { AIFashionLabHub } from '../components/ai/AIFashionLabHub';
+import { TextileHeritageExplorer } from '../components/ai/TextileHeritageExplorer';
 
 export const HomeView: React.FC = () => {
   const { products, categories, navigateTo, reviews, openVisualSearch } = useApp();
@@ -284,6 +286,12 @@ export const HomeView: React.FC = () => {
             ))}
         </div>
       </section>
+
+      {/* Complete AI Fashion Lab Hub (Try-On, Colour Studio, Design Studio, Fabric ID, Occasion Planner) */}
+      <AIFashionLabHub />
+
+      {/* Indian Textile Heritage Explorer */}
+      <TextileHeritageExplorer />
 
       {/* Philosophy & Radha-Krishna Story Spotlight */}
       <section className="bg-[#FAF5E8] border-y border-[#E8E2D9] py-16">

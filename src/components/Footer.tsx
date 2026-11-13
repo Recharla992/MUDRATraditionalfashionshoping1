@@ -212,6 +212,22 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <button
+                  onClick={() => navigateTo('ai-studio', { aiTab: 'try-on' })}
+                  className="hover:text-[#D4AF37] transition-colors cursor-pointer"
+                >
+                  AI Fashion Atelier & Try-On
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => navigateTo('ai-studio', { aiTab: 'occasion-planner' })}
+                  className="hover:text-[#D4AF37] transition-colors cursor-pointer"
+                >
+                  Occasion Planner & Heritage
+                </button>
+              </li>
+              <li>
+                <button
                   onClick={() => navigateTo('admin')}
                   className="text-[#D4AF37] hover:underline transition-colors cursor-pointer font-medium"
                 >

@@ -25,8 +25,10 @@ import { ensure5GalleryImages, normalizeImageUrl } from '../utils/imageHelper';
 interface AppContextType {
   // Navigation
   currentView: string;
-  navigateTo: (view: string, options?: { productId?: string; category?: string; subcategory?: string; orderId?: string }) => void;
+  navigateTo: (view: string, options?: { productId?: string; category?: string; subcategory?: string; orderId?: string; aiTab?: 'try-on' | 'color-studio' | 'design-studio' | 'fabric-identifier' | 'occasion-planner' }) => void;
   selectedProductId: string | null;
+  aiStudioTab: 'try-on' | 'color-studio' | 'design-studio' | 'fabric-identifier' | 'occasion-planner';
+  aiStudioProductId: string | null;
   activeCategoryFilter: string | null;
   activeSubcategoryFilter: string | null;
   searchQuery: string;
@@ -226,6 +228,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   // Navigation & View state
   const [currentView, setCurrentView] = useState<string>('home');
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
+  const [aiStudioTab, setAiStudioTab] = useState<'try-on' | 'color-studio' | 'design-studio' | 'fabric-identifier' | 'occasion-planner'>('try-on');
+  const [aiStudioProductId, setAiStudioProductId] = useState<string | null>(null);
   const [activeCategoryFilter, setActiveCategoryFilter] = useState<string | null>(null);
   const [activeSubcategoryFilter, setActiveSubcategoryFilter] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -404,10 +408,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const navigateTo = (
     view: string,
-    options?: { productId?: string; category?: string; subcategory?: string; orderId?: string }
+    options?: {
+      productId?: string;
+      category?: string;
+      subcategory?: string;
+      orderId?: string;
+      aiTab?: 'try-on' | 'color-studio' | 'design-studio' | 'fabric-identifier' | 'occasion-planner';
+    }
   ) => {
     setCurrentView(view);
     if (options?.productId) setSelectedProductId(options.productId);
+    if (options?.aiTab) setAiStudioTab(options.aiTab);
+    if (view === 'ai-studio' && options?.productId) setAiStudioProductId(options.productId);
     if (options?.category) setActiveCategoryFilter(options.category);
     if (options?.subcategory) setActiveSubcategoryFilter(options.subcategory);
     if (options?.orderId) setTrackingOrderId(options.orderId);
@@ -930,6 +942,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         currentView,
         navigateTo,
         selectedProductId,
+        aiStudioTab,
+        aiStudioProductId,
         activeCategoryFilter,
         activeSubcategoryFilter,
         searchQuery,
